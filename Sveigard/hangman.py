@@ -6,47 +6,41 @@ HANGMAN_PICS = ['''
       |
      ===''', '''
   +---+
-  0   |
+  O   |
       |
       |
      ===''', '''
   +---+
-  0   |
+  O   |
   |   |
       |
      ===''', '''
   +---+
-  0   |
+  O   |
  /|   |
       |
      ===''', '''
   +---+
-  0   |
+  O   |
  /|\  |
       |
      ===''', '''
   +---+
-  0   |
+  O   |
  /|\  |
  /    |
      ===''', '''
   +---+
-  0   |
+  O   |
  /|\  |
  / \  |
      ===''']
-words = 'аист акула бабуин баран барсук бобр бык верблюд волк воробей ворон выдра голубь гусь жаба ' \
-        'зебра змея индюк кит кобра коза козел койот корова кошка кролик крыса курица лама ласка лебедь ' \
-        'лев лиса лосось лось лягушка медведь моллюск моль мул муравей мышь норка носорог обезьяна овца ' \
-        'окунь олень орел осел панда паук питон попугай пума семга скунс собака сова тигр тритон тюлень ' \
-        'утка форель хорек черепаха ястреб ящерица'.split()
-
+words = 'аист акула бабуин баран барсук бобр бык верблюд волк воробей ворон выдра голубь гусь жаба зебра змея индюк кит кобра коза козел койот корова кошка кролик крыса курица лама ласка лебедь лев лиса лосось лось лягушка медведь моллюск моль мул муравей мышь норка носорог обезьяна овца окунь олень орёл осёл панда паук питон попугай пума семга скунс собака сова тигр тритон тюлень утка форель хорёк черепаха ястреб ящерица'.split()
 
 def getRandomWord(wordList):
-    # Эта функция возвращает случайную строку из переданного списка.
+    #Эта функция возвращает случайную строку из переданного списка
     wordIndex = random.randint(0, len(wordList) - 1)
     return wordList[wordIndex]
-
 
 def displayBoard(missedLetters, correctLetters, secretWord):
     print(HANGMAN_PICS[len(missedLetters)])
@@ -58,6 +52,7 @@ def displayBoard(missedLetters, correctLetters, secretWord):
     print()
 
     blanks = '_' * len(secretWord)
+
     for i in range(len(secretWord)): # заменяет пропуски отгаданными буквами
         if secretWord[i] in correctLetters:
             blanks = blanks[:i] + secretWord[i] + blanks[i+1:]
@@ -65,7 +60,6 @@ def displayBoard(missedLetters, correctLetters, secretWord):
     for letter in blanks: # Показывает секретное слово с пробелами между буквами
         print(letter, end=' ')
     print()
-
 
 def getGuess(alreadyGuessed):
     # Возвращает букву, введенную игроком. Эта функция проверяет, что игрок ввел только одну букву и ничего больше.
@@ -77,11 +71,10 @@ def getGuess(alreadyGuessed):
             print('Пожалуйста, введите одну букву.')
         elif guess in alreadyGuessed:
             print('Вы уже называли эту букву. Назовите другую.')
-        elif guess not in 'абвгдеежзийклмнопрстуфхцчшщъыьэюя':
+        elif guess not in 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя':
             print('Пожалуйста, введите БУКВУ.')
         else:
             return guess
-
 
 def playAgain():
     # Эта функция возвращает значение True, если игрок хочет сыграть заново; в противном случае возвращает False.
@@ -113,14 +106,15 @@ while True:
         if foundAllLetters:
             print('ДА! Секретное слово - "' + secretWord + '"! Вы угадали!')
             gameIsDone = True
-        else:
-            missedLetters = missedLetters + guess
+    else:
+        missedLetters = missedLetters + guess
 
-    # Проверяет, превысил ли игрок лимит попыток и проиграл.
-    if len(missedLetters) == len(HANGMAN_PICS) - 1:
-        isplayBoard(missedLetters, correctLetters, secretWord)
-        print('Вы исчерпали все попытки!\nНе угадано букв: ' + str(len(missedLetters)) + ' и угадано букв: ' + str(len(correctLetters)) + '. Было загадано слово "' + secretWord + '".')
-        gameIsDone = True
+        # Проверяет, превысил ли игрок лимит попыток и проиграл.
+        if len(missedLetters) == len(HANGMAN_PICS) - 1:
+            displayBoard(missedLetters, correctLetters, secretWord)
+            print('Вы исчерпали все попытки!\nНе угадано букв: ' + str(len(missedLetters)) + ' и угадано букв: ' + str(len(correctLetters)) + '. Было загадано слово "' + secretWord + '".')
+            gameIsDone = True
+
     # Запрашивает, хочет ли игрок сыграть заново (только если игра завершена).
     if gameIsDone:
         if playAgain():
